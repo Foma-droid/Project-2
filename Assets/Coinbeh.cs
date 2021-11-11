@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class Coinbeh : MonoBehaviour
 { 
-    private float hp = 1;
-    public float currenthp;
+    public float hp = 2;
+    private spawner _spawner;
     public float damage = 1;
     public TMP_Text hptext;
-
+    private int pole;
     private float lastTimeHit;
+
+    public TextMeshProUGUI count;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,19 +20,27 @@ public class Coinbeh : MonoBehaviour
         hptext.text = hp.ToString();
         
     }
-
+    
+    public void setspawner(spawner s)
+    {
+        _spawner = s;
+        
+    }
     public void MinusHp()
     {
         var currentTime = Time.realtimeSinceStartup;
 
-        if(lastTimeHit == 0 || (currentTime - lastTimeHit > 1f))
+        if(lastTimeHit == 0 || (currentTime - lastTimeHit > 0.2f))
         {
-            hp --;
+            hp--;
             lastTimeHit = currentTime;
+            count.text += 1.ToString();
+            
         }
         hptext.text = hp.ToString();
         if (hp == 0)
         {
+            _spawner.Remover(this);
            Destroy(this.gameObject);
         }
     }
